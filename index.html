@@ -12,6 +12,7 @@
 <meta property="og:image" content="https://iamrugal.github.io/assets/foto.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231f5fa8'/%3E%3Cpath d='M10 44 L24 26 L32 36 L40 22 L54 44Z' fill='%23eef2ef'/%3E%3C/svg%3E">
 <title>William Ruiz Morales</title>
+<script>try{var t=localStorage.getItem('tema');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -79,6 +80,23 @@ p { margin: 0; }
 .nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
 .nav ul a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
 .nav ul a:hover { color: var(--ink); }
+.nav-end { display: flex; align-items: center; gap: 22px; }
+.theme-btn {
+  width: 38px; height: 38px; display: grid; place-items: center; flex: none;
+  border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink);
+  cursor: pointer; padding: 0; transition: border-color .2s, color .2s;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+.theme-btn svg { width: 18px; height: 18px; transition: transform .4s ease; }
+.theme-btn:hover svg { transform: rotate(-20deg); }
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
+}
+#topo { transition: opacity .3s; }
 @media (max-width: 720px) { .nav ul { display: none; } }
 
 /* Hero */
@@ -97,6 +115,21 @@ p { margin: 0; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .role { font-family: var(--f-display); font-weight: 500; font-size: clamp(19px, 2.2vw, 24px); color: var(--ink); max-width: 30ch; }
 .lede { color: var(--muted); max-width: 56ch; font-size: 18px; }
+.ticker {
+  overflow: hidden; max-width: 34rem; color: var(--ink);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.ticker-track { display: flex; width: max-content; animation: ticker 22s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-group { display: flex; align-items: center; gap: 18px; padding-right: 18px; white-space: nowrap; }
+.ticker-group i { font-style: normal; color: var(--accent); font-size: 9px; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+  .ticker-group + .ticker-group { display: none; }
+  .ticker-group { white-space: normal; flex-wrap: wrap; }
+}
 .coords { display: flex; flex-wrap: wrap; gap: 8px 18px; }
 .coords span { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 .coords b { color: var(--ink); font-weight: 500; }
@@ -213,6 +246,15 @@ section.block { padding-block: 80px; border-bottom: 1px solid var(--line); }
   background: var(--moss-soft);
 }
 .interest svg { width: 100%; height: 56px; display: block; }
+.interest-media {
+  width: 100%; max-width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
+  display: grid; place-items: center; background: color-mix(in srgb, var(--moss) 9%, var(--moss-soft));
+}
+.interest-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; display: block; }
+.interest-media.fade { position: relative; }
+.interest-media.fade img { position: absolute; inset: 0; }
+.interest-media.fade img { opacity: 0; transition: opacity 1.2s ease-in-out; }
+.interest-media.fade img.on, .interest-media.fade img:first-child:not(.off) { opacity: 1; }
 .interest svg * { fill: none; stroke: var(--moss); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .interest h3 { font-size: 21px; font-weight: 700; }
 .interest p { font-size: 15.5px; color: var(--ink); }
@@ -248,6 +290,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 <nav class="nav" aria-label="Secciones">
   <div class="wrap">
     <a class="brand" href="#inicio">William Ruiz<span>.</span></a>
+    <div class="nav-end">
     <ul>
       <li><a href="#perfil">Perfil</a></li>
       <li><a href="#trayectoria">Trayectoria</a></li>
@@ -255,6 +298,11 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
       <li><a href="#intereses">Intereses</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro / oscuro">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -262,14 +310,18 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
   <canvas id="topo" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="hero-text">
-      <span class="label">Gestor del cambio · Ingeniero de requerimientos</span>
+      <div class="ticker label" role="text" aria-label="Ingeniero de requerimientos, gestor del cambio, ingeniero de datos">
+        <div class="ticker-track" aria-hidden="true">
+          <div class="ticker-group"><span>Ingeniero de requerimientos</span><i>◆</i><span>Gestor del cambio</span><i>◆</i><span>Ingeniero de datos</span><i>◆</i></div>
+          <div class="ticker-group"><span>Ingeniero de requerimientos</span><i>◆</i><span>Gestor del cambio</span><i>◆</i><span>Ingeniero de datos</span><i>◆</i></div>
+        </div>
+      </div>
       <h1>William<br>Ruiz <em>Morales</em></h1>
       <p class="role">Llevo las soluciones de TI desde la necesidad del usuario hasta su uso real.</p>
-      <p class="lede">Ingeniero Industrial con Maestría en Calidad y Gestión Integral. Más de 9 años levantando requerimientos, validando software y liderando la adopción de sistemas en el sector público, telecomunicaciones y energía.</p>
+      <p class="lede">Ingeniero Industrial con Maestría en Calidad y Gestión Integral. Más de 9 años elaborando requerimientos, validando software y liderando la adopción de sistemas en el sector público, telecomunicaciones y energía.</p>
       <div class="coords">
-        <span><b>Bogotá D.C.</b> · 2.640 m s.n.m.</span>
-        <span>4°36′N 74°04′O</span>
-        <span>ES nativo · EN B2</span>
+        <span><b>Bogotá D.C., Colombia</b></span>
+        <span>Español nativo · Inglés B2</span>
       </div>
       <div class="cta">
         <a class="btn primary" href="#portafolio">Ver portafolio</a>
@@ -289,7 +341,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
       </div>
       <div class="profile">
         <div class="prose">
-          <p>Acompaño las soluciones de principio a fin. Levanto y analizo requerimientos con los usuarios (historias de usuario, casos de uso, diseño funcional), los valido con pruebas funcionales y lidero la adopción con planes de capacitación por rol, transferencia de conocimiento y medición del uso.</p>
+          <p>Acompaño las soluciones de principio a fin. Elaboro y analizo requerimientos con los usuarios (historias de usuario, casos de uso, diseño funcional), los valido con pruebas funcionales y lidero la adopción con planes de capacitación por rol, transferencia de conocimiento y medición del uso.</p>
           <p>He trabajado en la implementación de sistemas de gestión documental electrónica (SGDEA), en el control de cambios bajo ITIL con Comité de Cambios (CAB) y en el aseguramiento de calidad de software, para entidades y empresas como Supersalud, Ericsson, Claro Colombia y Grupo Enel.</p>
           <div class="stats">
             <div class="stat"><strong>9+</strong><span>años en proyectos de TI</span></div>
@@ -301,16 +353,14 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
           <div class="fact-group">
             <span class="label">Competencias</span>
             <div class="chips">
-              <span class="chip">Levantamiento de requerimientos</span>
               <span class="chip">Historias de usuario y casos de uso</span>
-              <span class="chip">Diseño funcional</span>
               <span class="chip">Pruebas funcionales (QA)</span>
               <span class="chip">Gestión del cambio</span>
-              <span class="chip">Capacitación por rol</span>
-              <span class="chip">Gestión del conocimiento</span>
               <span class="chip">Medición de adopción</span>
               <span class="chip">ITIL · CAB</span>
               <span class="chip">Gestión documental</span>
+              <span class="chip">Administración de bases de datos</span>
+              <span class="chip">Análisis de datos</span>
             </div>
           </div>
           <div class="fact-group">
@@ -334,7 +384,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
       <div class="sec-head">
         <span class="label">Trayectoria</span>
         <h2>La ruta hasta hoy</h2>
-        <p>Del aseguramiento HSE a la gestión del cambio en proyectos de software, pasando por pruebas, procesos y PMO.</p>
+        <p>De la consultoría de procesos a la gestión del cambio en proyectos de software, pasando por pruebas, PMO y control de cambios.</p>
       </div>
       <ol class="route">
         <li class="stop now">
@@ -400,7 +450,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
             </ul>
           </div>
         </li>
-        <li class="stop">
+        <li class="stop past">
           <span class="when">ago 2016 –<br>mar 2018</span>
           <span class="pin" aria-hidden="true"></span>
           <div class="stop-body">
@@ -410,14 +460,6 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
               <li>Análisis de procesos y casos de uso para GeSI, GeMAS y AQoS.</li>
               <li>Documentación de integraciones y migración de datos (HLD), formación y pruebas.</li>
             </ul>
-          </div>
-        </li>
-        <li class="stop past">
-          <span class="when">2014 –<br>2015</span>
-          <span class="pin" aria-hidden="true"></span>
-          <div class="stop-body">
-            <h3>Supervisor HSE y SISOMA</h3>
-            <span class="org">Electrificadora del Huila · U.T. Torre Materno · Neiva</span>
           </div>
         </li>
       </ol>
@@ -438,14 +480,14 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
             <h3>Adopción del SGDEA SuperArgo</h3>
           </div>
           <dl>
-            <div><dt>Reto</dt><dd>Lograr que una entidad nacional pasara a gestionar sus documentos en un sistema electrónico, en la sede central y en las regionales.</dd></div>
-            <div><dt>Mi rol</dt><dd>Gestión del cambio y del conocimiento: capacitación, acompañamiento en el despliegue de módulos como PQRS y Notificaciones, y medición del acceso y uso de la plataforma.</dd></div>
-            <div><dt>Aporte</dt><dd>Datos de uso para orientar las decisiones de mejora continua.</dd></div>
+            <div><dt>Reto</dt><dd>Llevar a una entidad del orden nacional a gestionar sus documentos en un Sistema de Gestión de Documentos Electrónicos de Archivo (SGDEA), tanto en la sede central como en las regionales.</dd></div>
+            <div><dt>Mi rol</dt><dd>Gestión del cambio y del conocimiento: elaboración de requerimientos, plan y ejecución de pruebas, capacitación y acompañamiento en el despliegue de los módulos del sistema —Radicación, PQRS, Expedientes electrónicos y Notificaciones, entre otros—, además de la medición del acceso y uso de la plataforma.</dd></div>
+            <div><dt>Aporte</dt><dd>Seguimiento a la apropiación del sistema por parte de los usuarios finales, como insumo para la mejora continua de la entidad.</dd></div>
           </dl>
           <div class="figure">
             <strong>~1.000</strong>
             <span>usuarios acompañados en la sede central y 8 regionales</span>
-            <div class="chips"><span class="chip">PQRS</span><span class="chip">Notificaciones</span><span class="chip">Medición de uso</span></div>
+            <div class="chips"><span class="chip">Radicación</span><span class="chip">PQRS</span><span class="chip">Expedientes electrónicos</span><span class="chip">Notificaciones</span><span class="chip">Pruebas</span><span class="chip">Medición de uso</span></div>
           </div>
         </article>
 
@@ -528,25 +570,39 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
       </div>
       <div class="interests">
         <article class="interest">
-          <svg viewBox="0 0 200 56" aria-hidden="true"><polyline points="4,40 24,34 44,38 64,26 84,30 104,20 124,24 144,14 164,18 196,8"/><line x1="4" y1="50" x2="196" y2="50" stroke-dasharray="2 6"/></svg>
+          <div class="interest-media fade">
+            <img src="assets/running.jpg" width="960" height="720" loading="lazy" alt="William con su medalla después de terminar una media maratón">
+            <img src="assets/running-2.jpg" width="960" height="720" loading="lazy" alt="William de espaldas con camiseta roja de corredor antes de una carrera">
+            <img src="assets/running-3.jpg" width="960" height="720" loading="lazy" alt="William con la camiseta y el número de La Maratón de Bogotá 42K">
+            <img src="assets/running-4.jpg" width="960" height="720" loading="lazy" alt="Selfie de William con una compañera en la salida de la Media Maratón de Bogotá">
+          </div>
           <span class="unit">ritmo · min/km</span>
           <h3>Running</h3>
           <p>Salir a correr me ordena la cabeza. Cada kilómetro es constancia, igual que en un buen proyecto.</p>
         </article>
         <article class="interest">
-          <svg viewBox="0 0 200 56" aria-hidden="true"><polyline points="4,50 34,36 52,42 82,14 100,24 118,8 146,34 166,28 196,50"/><circle cx="118" cy="8" r="3"/></svg>
+          <div class="interest-media fade">
+            <img src="assets/montana-cumbre.jpg" width="960" height="720" loading="lazy" alt="William sonriendo en la cumbre de un nevado, con casco y equipo de alta montaña">
+            <img src="assets/montana-crater.jpg" width="960" height="720" loading="lazy" alt="Cráter de un nevado cubierto de hielo sobre un mar de nubes">
+            <img src="assets/montana-laguna.jpg" width="960" height="720" loading="lazy" alt="William frente a una laguna glaciar de aguas turquesa, al pie de una montaña nevada">
+          </div>
           <span class="unit">altitud · m s.n.m.</span>
           <h3>Montaña</h3>
           <p>Caminatas y cumbres. La montaña enseña a planear, a medir fuerzas y a disfrutar el camino.</p>
         </article>
         <article class="interest">
-          <svg viewBox="0 0 200 56" aria-hidden="true"><rect x="58" y="8" width="84" height="40" rx="20"/><line x1="80" y1="20" x2="80" y2="36"/><line x1="72" y1="28" x2="88" y2="28"/><circle cx="114" cy="24" r="2.5"/><circle cx="124" cy="32" r="2.5"/></svg>
+          <div class="interest-media"><img src="assets/videojuegos.jpg" width="550" height="413" loading="lazy" alt="Inventario de materiales en The Legend of Zelda: Breath of the Wild"></div>
           <span class="unit">player 1 · listo</span>
           <h3>Videojuegos</h3>
           <p>Mundos bien diseñados, estrategia y buenas historias. También un recordatorio de lo que es una experiencia de usuario fluida.</p>
         </article>
         <article class="interest">
-          <svg viewBox="0 0 200 56" aria-hidden="true"><circle cx="100" cy="28" r="22"/><path d="M100 6 L112 30 M122 28 L96 36 M89 47 L88 22 M78 28 L104 20 M111 47 L100 6"/></svg>
+          <div class="interest-media fade">
+            <img src="assets/fotografia.jpg" width="960" height="720" loading="lazy" alt="Nevado entre nubes al atardecer, sobre cordilleras en tonos azules">
+            <img src="assets/fotografia-cafetal.jpg" width="960" height="720" loading="lazy" alt="Ladera de montaña sembrada con cafetales y plátano">
+            <img src="assets/fotografia-edificios.jpg" width="960" height="720" loading="lazy" alt="Edificios altos vistos desde abajo, con el sol en el centro del cielo azul">
+            <img src="assets/fotografia-machupicchu.jpg" width="960" height="720" loading="lazy" alt="Ciudadela de Machu Picchu con el Huayna Picchu al fondo">
+          </div>
           <span class="unit">f/8 · 1/250 s · ISO 100</span>
           <h3>Fotografía</h3>
           <p>Paisajes y momentos en el camino. Mirar con calma para encontrar el encuadre correcto.</p>
@@ -560,7 +616,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
       <div class="contact-card">
         <div>
           <h2>Conversemos</h2>
-          <p>Si tu equipo necesita levantar requerimientos, asegurar la calidad o lograr que la gente adopte un sistema nuevo, escríbeme.</p>
+          <p>Si tu equipo necesita elaborar requerimientos, asegurar la calidad o lograr que la gente adopte un sistema nuevo, escríbeme.</p>
         </div>
         <div class="contact-rows">
           <div class="crow">
@@ -580,7 +636,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 <footer>
   <div class="wrap">
     <span>© 2026 William Ruiz Morales</span>
-    <span>Hecho en Bogotá · 2.640 m s.n.m.</span>
+    <span>Hecho en Bogotá, Colombia</span>
   </div>
 </footer>
 
@@ -599,9 +655,28 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
     try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
   });
 
-  // Curvas de nivel en el encabezado (marching squares sobre un relieve de varias cumbres)
+  // Botón modo claro / oscuro (recuerda la elección en este navegador)
+  var root = document.documentElement, themeBtn = document.getElementById('themeBtn');
+  var mqDark = window.matchMedia('(prefers-color-scheme: dark)');
+  function currentTheme() { return root.getAttribute('data-theme') || (mqDark.matches ? 'dark' : 'light'); }
+  function syncThemeLabel() {
+    themeBtn.setAttribute('aria-label', currentTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+  }
+  themeBtn.addEventListener('click', function () {
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('tema', next); } catch (e) {}
+    syncThemeLabel();
+  });
+  try { mqDark.addEventListener('change', syncThemeLabel); } catch (e) {}
+  syncThemeLabel();
+
+  // Curvas de nivel en el encabezado (marching squares sobre un relieve de varias cumbres).
+  // Al pasar el cursor, el relieve se ondula como agua: cada movimiento deja una onda que se expande y se apaga.
+  var hero = document.querySelector('.hero');
   var canvas = document.getElementById('topo');
   var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var peaks = [
     [0.78, 0.30, 0.22, 1.0], [0.92, 0.75, 0.18, 0.8], [0.60, 0.80, 0.16, 0.55],
     [0.50, 0.15, 0.14, 0.45], [1.05, 0.10, 0.20, 0.6], [0.70, 0.55, 0.10, 0.35]
@@ -614,41 +689,148 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
     }
     return v + 0.04 * Math.sin(x * 9 + y * 4) + 0.03 * Math.cos(y * 11 - x * 3);
   }
-  function draw() {
-    var w = canvas.clientWidth, hgt = canvas.clientHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    if (!w || !hgt) return;
-    canvas.width = w * dpr; canvas.height = hgt * dpr;
+
+  var CELL = 8, W = 0, H = 0, cols = 0, rows = 0, base = null, grid = null, color = '#1f5fa8';
+  var SEGS = {1:[[3,2]],2:[[2,1]],3:[[3,1]],4:[[0,1]],5:[[0,1],[3,2]],6:[[0,2]],7:[[0,3]],8:[[0,3]],9:[[0,2]],10:[[0,3],[2,1]],11:[[0,1]],12:[[3,1]],13:[[2,1]],14:[[3,2]]};
+
+  function setup() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    if (!W || !H) return false;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, hgt);
-    var color = getComputedStyle(document.documentElement).getPropertyValue('--contour').trim() || '#1f5fa8';
-    var cell = 8, cols = Math.ceil(w / cell) + 1, rows = Math.ceil(hgt / cell) + 1, scale = Math.max(w, 700);
-    var grid = new Float32Array(cols * rows);
-    for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) grid[j * cols + i] = h(i * cell / scale, j * cell / scale * 1.0);
+    cols = Math.ceil(W / CELL) + 1; rows = Math.ceil(H / CELL) + 1;
+    var scale = Math.max(W, 700);
+    base = new Float32Array(cols * rows); grid = new Float32Array(cols * rows);
+    for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) base[j * cols + i] = h(i * CELL / scale, j * CELL / scale);
+    return true;
+  }
+  function readColor() {
+    color = getComputedStyle(root).getPropertyValue('--contour').trim() || '#1f5fa8';
+  }
+
+  function render(g) {
+    ctx.clearRect(0, 0, W, H);
     ctx.strokeStyle = color; ctx.lineCap = 'round';
-    var step = 0.06;
+    var pt = [[0, 0], [0, 0], [0, 0], [0, 0]]; // arriba, derecha, abajo, izquierda
     for (var k = 1; k < 22; k++) {
-      var lvl = k * step, index = k % 5 === 0;
+      var lvl = k * 0.06, index = k % 5 === 0;
       ctx.globalAlpha = index ? 0.42 : 0.2; ctx.lineWidth = index ? 1.4 : 0.8;
       ctx.beginPath();
       for (var y = 0; y < rows - 1; y++) for (var x = 0; x < cols - 1; x++) {
-        var a = grid[y * cols + x], b = grid[y * cols + x + 1], c = grid[(y + 1) * cols + x + 1], d = grid[(y + 1) * cols + x];
+        var a = g[y * cols + x], b = g[y * cols + x + 1], c = g[(y + 1) * cols + x + 1], d = g[(y + 1) * cols + x];
         var idx = (a > lvl) << 3 | (b > lvl) << 2 | (c > lvl) << 1 | (d > lvl);
         if (idx === 0 || idx === 15) continue;
-        var px = x * cell, py = y * cell;
-        var T = [px + cell * (lvl - a) / (b - a), py], R = [px + cell, py + cell * (lvl - b) / (c - b)],
-            B = [px + cell * (lvl - d) / (c - d), py + cell], L = [px, py + cell * (lvl - a) / (d - a)];
-        var segs = {1:[[L,B]],2:[[B,R]],3:[[L,R]],4:[[T,R]],5:[[T,R],[L,B]],6:[[T,B]],7:[[T,L]],8:[[T,L]],9:[[T,B]],10:[[T,L],[B,R]],11:[[T,R]],12:[[L,R]],13:[[B,R]],14:[[L,B]]}[idx];
-        for (var s = 0; s < segs.length; s++) { ctx.moveTo(segs[s][0][0], segs[s][0][1]); ctx.lineTo(segs[s][1][0], segs[s][1][1]); }
+        var px = x * CELL, py = y * CELL;
+        pt[0][0] = px + CELL * (lvl - a) / (b - a); pt[0][1] = py;
+        pt[1][0] = px + CELL; pt[1][1] = py + CELL * (lvl - b) / (c - b);
+        pt[2][0] = px + CELL * (lvl - d) / (c - d); pt[2][1] = py + CELL;
+        pt[3][0] = px; pt[3][1] = py + CELL * (lvl - a) / (d - a);
+        var segs = SEGS[idx];
+        for (var s = 0; s < segs.length; s++) {
+          var p0 = pt[segs[s][0]], p1 = pt[segs[s][1]];
+          ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]);
+        }
       }
       ctx.stroke();
     }
     ctx.globalAlpha = 1;
   }
-  var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 120); });
-  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw); } catch (e) {}
-  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
-  draw();
+
+  // ---- Efecto agua ----
+  var ripples = [], hover = 0, hoverTarget = 0, mouse = { x: -9999, y: -9999 }, last = { x: -9999, y: -9999, t: 0 };
+  var running = false, LIFE = 2.6, SPEED = 260;
+
+  function addRipple(x, y, amp) {
+    ripples.push({ x: x, y: y, t0: performance.now(), amp: amp });
+    if (ripples.length > 14) ripples.shift();
+    start();
+  }
+  function start() { if (!running && !reduceMotion.matches) { running = true; requestAnimationFrame(frame); } }
+
+  function frame(now) {
+    var t = now / 1000;
+    hover += (hoverTarget - hover) * 0.06;
+    ripples = ripples.filter(function (r) { return (now - r.t0) / 1000 < LIFE; });
+
+    // Datos de cada onda para este cuadro
+    var R = ripples.map(function (r) {
+      var age = (now - r.t0) / 1000;
+      return { x: r.x, y: r.y, front: age * SPEED, age: age, a: r.amp * Math.exp(-age * 1.5) };
+    });
+    var swell = 0.018 * hover;
+    for (var j = 0; j < rows; j++) {
+      var py = j * CELL;
+      for (var i = 0; i < cols; i++) {
+        var px = i * CELL, v = base[j * cols + i];
+        // Oleaje suave mientras el cursor está encima
+        if (swell > 0.0005) {
+          v += swell * Math.sin(px * 0.018 + t * 1.6) * Math.cos(py * 0.022 - t * 1.2);
+          var mx = px - mouse.x, my = py - mouse.y, md = mx * mx + my * my;
+          if (md < 90000) v += 0.05 * hover * Math.exp(-md / 9000);
+        }
+        for (var n = 0; n < R.length; n++) {
+          var r = R[n], dx = px - r.x, dy = py - r.y, dist = Math.sqrt(dx * dx + dy * dy);
+          var behind = r.front - dist;
+          if (behind < -40 || behind > 260) continue;
+          var env = behind < 0 ? 1 + behind / 40 : Math.exp(-behind / 110);
+          v += r.a * env * Math.sin(behind * 0.06) / (1 + dist / 260);
+        }
+        grid[j * cols + i] = v;
+      }
+    }
+    render(grid);
+
+    if (ripples.length || hover > 0.01 || hoverTarget > 0) requestAnimationFrame(frame);
+    else { running = false; render(base); }
+  }
+
+  function local(e) {
+    var b = canvas.getBoundingClientRect();
+    return { x: e.clientX - b.left, y: e.clientY - b.top };
+  }
+  hero.addEventListener('pointerenter', function (e) {
+    if (reduceMotion.matches) return;
+    var p = local(e); mouse = p; hoverTarget = 1; addRipple(p.x, p.y, 0.09);
+  });
+  hero.addEventListener('pointermove', function (e) {
+    if (reduceMotion.matches) return;
+    var p = local(e), now = performance.now();
+    mouse = p; hoverTarget = 1; start();
+    var dx = p.x - last.x, dy = p.y - last.y;
+    if (dx * dx + dy * dy > 3600 && now - last.t > 110) {
+      addRipple(p.x, p.y, 0.07); last = { x: p.x, y: p.y, t: now };
+    }
+  });
+  hero.addEventListener('pointerleave', function () { hoverTarget = 0; });
+  hero.addEventListener('pointerdown', function (e) {
+    if (reduceMotion.matches) return;
+    var p = local(e); addRipple(p.x, p.y, 0.13);
+  });
+
+  // Fotos que se alternan en las tarjetas de intereses (se detienen al pasar el cursor)
+  if (!reduceMotion.matches) {
+    document.querySelectorAll('.interest-media.fade').forEach(function (box, n) {
+      var imgs = box.querySelectorAll('img'), i = 0, paused = false;
+      box.addEventListener('pointerenter', function () { paused = true; });
+      box.addEventListener('pointerleave', function () { paused = false; });
+      setTimeout(function () {
+        setInterval(function () {
+          if (paused || document.hidden) return;
+          imgs[i].classList.remove('on'); imgs[i].classList.add('off');
+          i = (i + 1) % imgs.length;
+          imgs[i].classList.remove('off'); imgs[i].classList.add('on');
+        }, 5000);
+      }, n * 1600);
+    });
+  }
+
+  function redraw() { readColor(); if (setup()) render(base); }
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(redraw, 120); });
+  try { mqDark.addEventListener('change', redraw); } catch (e) {}
+  new MutationObserver(redraw).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+  redraw();
 })();
 </script>
 </body>
