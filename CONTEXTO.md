@@ -4,7 +4,7 @@ Archivo para retomar el trabajo en cualquier momento (también sirve para dárse
 
 ## Origen
 
-- Creada en octubre de 2026 con Claude, a partir de la hoja de vida `HV_William_Ruiz_Morales_GCIR.docx`.
+- Creada en octubre de 2026 con Claude, a partir de la hoja de vida `HV_William_Ruiz_Morales_GCIR.docx`. Desde el 2026-10-09 se alinea con `HV_William_Ruiz_Morales_IRAD.docx` (Ingeniero de requerimientos y analista de datos).
 - Intereses personales indicados por William: running, montaña, videojuegos y fotografía.
 - Cuenta de GitHub: `IAmRugal` · URL: https://iamrugal.github.io
 
@@ -14,7 +14,7 @@ Archivo para retomar el trabajo en cualquier momento (también sirve para dárse
 - **Colores:** fondo gris verdoso claro, tinta verde pino, acento azul (`#1f5fa8`, mismo tono del aro de la foto de la HV) y verde musgo para la sección de intereses. Modo oscuro automático según el sistema, más un botón (luna/sol) en la barra superior para cambiarlo; la elección se recuerda en el navegador (`localStorage`, clave `tema`).
 - **Tipografías (Google Fonts):** Bricolage Grotesque (títulos), Public Sans (texto), JetBrains Mono (etiquetas, fechas, coordenadas).
 - **Detalles propios:** unidades de cada interés (min/km, m s.n.m., f/8 · 1/250 s · ISO 100).
-- **Encabezado:** los roles (Ingeniero de requerimientos · Gestor del cambio · Ingeniero de datos) pasan como un aviso en movimiento (marquesina en CSS; se detiene al pasar el cursor). Debajo del párrafo: solo "Bogotá D.C., Colombia" e idiomas (sin altitud ni coordenadas, por decisión de William).
+- **Encabezado:** los roles (Ingeniero de requerimientos · Analista de datos · Gestor del cambio; se usa "Analista" y no "Ingeniero de datos" hasta tener proyectos de ingeniería de datos que lo respalden) pasan como un aviso en movimiento (marquesina en CSS; se detiene al pasar el cursor). Debajo del párrafo: solo "Bogotá D.C., Colombia" e idiomas (sin altitud ni coordenadas, por decisión de William).
 - **Redacción:** usar "elaborar requerimientos", no "levantar".
 - **Trayectoria:** no incluye la experiencia HSE/SISOMA (decisión de William); se mantiene la certificación de Auditor HSEQ en Formación.
 - **Todo en un archivo:** `index.html` contiene HTML, CSS y JS; la foto está en `assets/foto.jpg`.
@@ -26,18 +26,19 @@ Archivo para retomar el trabajo en cualquier momento (también sirve para dárse
 
 ## Contenido a validar por William
 
-- Los textos de la sección de intereses son genéricos (redactados por Claude). Reemplazar con experiencias reales.
+- Videojuegos y Fotografía aún tienen textos genéricos (redactados por Claude).
 - El portafolio solo usa logros que aparecen en la HV; agregar cifras o resultados concretos si los hay.
 
 ## Pendientes / ideas
 
 - [ ] Galería de fotografía (las tarjetas de intereses ya rotan fotos propias; falta una galería ampliable)
-- [ ] Reescribir textos de Running, Montaña y Videojuegos con experiencias reales (maratón 42K, nevados, etc.)
-- [ ] Confirmar permiso de la persona que aparece en la selfie de Running (`assets/running-4.jpg`)
+- [x] Textos reales de Running (primera maratón, Medellín 2024) y Montaña (cumbre Nevado del Tolima, 4 días)
+- [ ] Texto real de Videojuegos y Fotografía
+- [x] Se quitó la selfie de Running (`running-4.jpg`) por decisión de William.
 - [ ] Enlace a LinkedIn
-- [ ] Versión en inglés
+- [x] Versión en inglés en `en/index.html` (https://iamrugal.github.io/en/). Botón ES/EN en la barra superior de ambas páginas. Si cambias un texto en español, actualiza también la versión en inglés.
 - [ ] Dominio propio (opcional, ~USD 10–15/año)
-- [ ] Subir proyectos de bases de datos (Esp. Jorge Tadeo Lozano) como portafolio técnico
+- [x] Proyecto de datos: SECOP II con MongoDB (sección #datos). Agregar más proyectos de la especialización cuando existan.
 
 ## Historial
 
@@ -45,3 +46,7 @@ Archivo para retomar el trabajo en cualquier momento (también sirve para dárse
 - **2026-10-06** · Botón de modo claro/oscuro y efecto de agua en las curvas de nivel del encabezado.
 - **2026-10-06** · Roles en marquesina (se agrega Ingeniero de datos), ubicación simplificada, "levantar" → "elaborar", se quita HSE/SISOMA y se reescribe el caso SGDEA SuperArgo (Supersalud).
 - **2026-10-06** · Competencias depuradas (+ Administración de bases de datos, Análisis de datos). Fotos propias en las cuatro tarjetas de intereses, con rotación suave (Running 4, Montaña 3, Videojuegos 1, Fotografía 4).
+- **2026-10-09** · Contenido alineado con la HV IRAD: rol "Analista de datos" en la marquesina, perfil con bases de datos (PostgreSQL, Oracle, MongoDB, Python), competencias de datos, viñetas de trayectoria con reportes/indicadores/seguimiento, Maestría en Ingeniería y Analítica de Datos como próximo paso, diplomado CORHUILA.
+- **2026-10-09** · Nueva sección "Proyectos de datos" (#datos): SECOP II con MongoDB Atlas, Compass, pipelines de agregación, Atlas Search y Python. Capturas en `assets/secop-*.png`.
+- **2026-10-13** · Competencias: se quitan Medición de adopción, Reportes e indicadores e Integraciones y migración de datos. Trayectoria: la experiencia bajo el cursor se resalta como tarjeta y las demás se atenúan. Running: se quita la selfie.
+- **2026-10-13** · Versión en inglés (`en/index.html`) con botón ES/EN y enlaces hreflang.
